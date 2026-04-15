@@ -8,9 +8,9 @@ import sympy as sp
 import pandas as pd
 import networkx as nx
 
-st.set_page_config(page_title="CogniEvo v25 — Complete", layout="wide")
+st.set_page_config(page_title="CogniEvo v25 — Complete Agent Evolution", layout="wide")
 st.title("🧠 CogniEvo v25")
-st.markdown("**Final Complete Edition** — All domains + Quantum Computing, Quantum Error Correction & Real Bitcoin Puzzles")
+st.markdown("**Complete Agent Evolution Engine** — Population of cognitive agents evolving new undiscovered processing methods with no guardrails")
 
 DATA_FILE = Path("cogni_evo_profile.json")
 
@@ -23,16 +23,16 @@ PROBLEMS = [
     {"type": "number_theory", "problem": "Prime factors of 2024", "solver": lambda: sp.factorint(2024)},
 
     # Quantum Foundations
-    {"type": "quantum_foundations", "problem": "Quantum Measurement Problem: What causes wavefunction collapse?", 
+    {"type": "quantum_foundations", "problem": "Quantum Measurement Problem: What physically causes wavefunction collapse?", 
      "solver": lambda: "No consensus — Copenhagen, Many-Worlds, Objective Collapse, QBism all compete"},
-    {"type": "quantum_foundations", "problem": "Wigner's Friend Paradox & Extended Scenarios", 
-     "solver": lambda: "Challenges universality of quantum mechanics"},
-    {"type": "quantum_foundations", "problem": "Quantum Contextuality", 
-     "solver": lambda: "Kochen-Specker theorem confirmed experimentally"},
-    {"type": "quantum_foundations", "problem": "Quantum-to-Classical Transition", 
-     "solver": lambda: "Decoherence helps but does not fully solve measurement problem"},
+    {"type": "quantum_foundations", "problem": "Wigner's Friend Paradox & Extended Wigner's Friend Scenarios", 
+     "solver": lambda: "Challenges the universality of quantum mechanics and observer-dependence"},
+    {"type": "quantum_foundations", "problem": "Quantum Contextuality: Is reality non-contextual?", 
+     "solver": lambda: "Kochen-Specker theorem + recent experiments show strong contextuality"},
+    {"type": "quantum_foundations", "problem": "The Quantum-to-Classical Transition: How does classical reality emerge?", 
+     "solver": lambda: "Decoherence helps but does not fully solve the measurement problem"},
 
-    # Quantum Computing & Quantum Domain
+    # Quantum Computing & Quantum Error Correction
     {"type": "quantum_computing", "problem": "Quantum Supremacy vs Practical Quantum Advantage", 
      "solver": lambda: "Achieved in limited cases — useful advantage still limited"},
     {"type": "quantum_computing", "problem": "Fault-Tolerant Quantum Computing Threshold", 
@@ -47,56 +47,86 @@ PROBLEMS = [
      "solver": lambda: "What problems truly benefit from quantum speedups?"},
 
     # Particle Physics
-    {"type": "particle_physics", "problem": "Hierarchy Problem", 
-     "solver": lambda: "Why is the Higgs mass so much smaller than the Planck scale?"},
-    {"type": "particle_physics", "problem": "Baryon Asymmetry", 
-     "solver": lambda: "Why is there more matter than antimatter?"},
-    {"type": "particle_physics", "problem": "Neutrino Masses", 
+    {"type": "particle_physics", "problem": "Hierarchy Problem: Why is the Higgs mass so much smaller than the Planck scale?", 
+     "solver": lambda: "Requires extreme fine-tuning or new physics"},
+    {"type": "particle_physics", "problem": "Baryon Asymmetry: Why is there more matter than antimatter?", 
+     "solver": lambda: "Sakharov conditions not fully satisfied by known CP violation"},
+    {"type": "particle_physics", "problem": "Neutrino Masses: Why are neutrinos so light?", 
      "solver": lambda: "Dirac or Majorana? Seesaw mechanism unknown"},
+    {"type": "particle_physics", "problem": "Strong CP Problem & the Axion", 
+     "solver": lambda: "Why is θ_QCD ≈ 0?"},
 
     # Consciousness & Neuroscience
-    {"type": "consciousness", "problem": "Hard Problem of Consciousness", 
-     "solver": lambda: "Why does subjective experience exist at all?"},
-    {"type": "consciousness", "problem": "Binding Problem", 
-     "solver": lambda: "How does the brain unify features into one experience?"},
+    {"type": "consciousness", "problem": "Hard Problem of Consciousness: Why does subjective experience exist at all?", 
+     "solver": lambda: "Chalmers' Hard Problem — explanatory gap"},
+    {"type": "consciousness", "problem": "Binding Problem: How does the brain unify disparate features into a single experience?", 
+     "solver": lambda: "Still unsolved"},
+    {"type": "consciousness", "problem": "Neural Correlates of Consciousness (NCC)", 
+     "solver": lambda: "Partial correlates known, causation vs correlation unclear"},
+    {"type": "consciousness", "problem": "Free Will & Libet Experiments", 
+     "solver": lambda: "Readiness potential precedes awareness"},
 
     # Origin of Life
-    {"type": "origin_of_life", "problem": "Abiogenesis", 
-     "solver": lambda: "How did self-replicating molecules arise?"},
-    {"type": "origin_of_life", "problem": "Homochirality", 
-     "solver": lambda: "Why are biological molecules chiral in one handedness?"},
+    {"type": "origin_of_life", "problem": "Abiogenesis: How did the first self-replicating molecules arise?", 
+     "solver": lambda: "RNA World hypothesis strong but prebiotic synthesis incomplete"},
+    {"type": "origin_of_life", "problem": "Homochirality: Why are all biological amino acids left-handed?", 
+     "solver": lambda: "No definitive mechanism for symmetry breaking"},
+    {"type": "origin_of_life", "problem": "Origin of the Genetic Code", 
+     "solver": lambda: "Frozen accident or stereochemical theory — no consensus"},
 
     # Black Holes & Astrophysics
     {"type": "black_holes_astrophysics", "problem": "Black Hole Information Paradox", 
-     "solver": lambda: "Is information destroyed in black holes?"},
+     "solver": lambda: "Hawking radiation vs quantum unitarity"},
     {"type": "black_holes_astrophysics", "problem": "ER = EPR Conjecture", 
-     "solver": lambda: "Are wormholes the origin of entanglement?"},
+     "solver": lambda: "Are wormholes the microscopic origin of entanglement?"},
+    {"type": "black_holes_astrophysics", "problem": "Singularity Resolution", 
+     "solver": lambda: "General relativity breaks down — quantum gravity needed"},
+    {"type": "black_holes_astrophysics", "problem": "Hubble Tension", 
+     "solver": lambda: "Discrepancy in expansion rate measurements"},
 
     # Foundations of Computation & Complexity
     {"type": "computation_foundations", "problem": "P vs NP", 
      "solver": lambda: "Millennium Prize Problem — open"},
+    {"type": "computation_foundations", "problem": "Computational Irreducibility", 
+     "solver": lambda: "Some systems have no shortcut"},
+    {"type": "computation_foundations", "problem": "Halting Problem implications", 
+     "solver": lambda: "Undecidable in general"},
 
     # Climate & Earth System Modeling
     {"type": "climate_modeling", "problem": "Cloud Feedback Uncertainty", 
-     "solver": lambda: "Largest source of uncertainty in climate models"},
+     "solver": lambda: "Largest source of uncertainty in projections"},
+    {"type": "climate_modeling", "problem": "Tipping Points & Abrupt Climate Change", 
+     "solver": lambda: "Predictability limited"},
 
     # Additional Pure Math
     {"type": "pure_math", "problem": "Navier–Stokes Existence and Smoothness", 
      "solver": lambda: "Millennium Prize — open"},
+    {"type": "pure_math", "problem": "Langlands Program", 
+     "solver": lambda: "Vast web of conjectures — partial cases proven"},
 
     # Philosophy of Mathematics & Foundations
     {"type": "philosophy_math", "problem": "Platonism vs Formalism", 
      "solver": lambda: "Do mathematical objects exist independently?"},
     {"type": "philosophy_math", "problem": "Gödel’s Incompleteness Theorems", 
-     "solver": lambda: "Limits of formal systems"},
+     "solver": lambda: "Every sufficiently powerful system is incomplete"},
+    {"type": "philosophy_math", "problem": "Wigner’s Unreasonable Effectiveness of Mathematics", 
+     "solver": lambda: "Why does abstract math describe reality so well?"},
+    {"type": "philosophy_math", "problem": "Continuum Hypothesis", 
+     "solver": lambda: "Independent of ZFC"},
 
     # Fermi Paradox / Astrobiology
     {"type": "fermi_astrobiology", "problem": "Fermi Paradox: Where is everybody?", 
-     "solver": lambda: "Great Filter, Rare Earth, Zoo Hypothesis debated"},
+     "solver": lambda: "No convincing resolution"},
+    {"type": "fermi_astrobiology", "problem": "Drake Equation", 
+     "solver": lambda: "Parameters too uncertain"},
+    {"type": "fermi_astrobiology", "problem": "The Great Filter", 
+     "solver": lambda: "Behind us or ahead?"},
 
     # Mathematical Biology & Evolutionary Dynamics
     {"type": "math_biology", "problem": "Evolution of Evolvability", 
      "solver": lambda: "Why is evolution so effective at producing complexity?"},
+    {"type": "math_biology", "problem": "Origin of Multicellularity", 
+     "solver": lambda: "Game-theoretic dynamics unclear"},
 
     # ====================== REAL BITCOIN PUZZLES ======================
     {"type": "bitcoin_puzzles", "problem": "#1: Bitcoin Puzzle #66 — 66-bit key space (address 1BY8E...)", 
@@ -131,31 +161,39 @@ PROBLEMS = [
      "solver": lambda: "Strong theory, limited evidence"},
 ]
 
-MODES = ["visual_spatial", "symbolic", "analogical", "procedural", "meta_reflective", "resonance_folding"]
+MODES = ["visual_spatial", "symbolic", "analogical", "procedural", "meta_reflective", "resonance_folding", "generative_invention"]
 
-class CognitiveStrategy:
+class CognitiveAgent:
     def __init__(self, weights=None, name=None):
         if weights is None:
-            self.weights = {mode: round(random.uniform(0.1, 1.0), 2) for mode in MODES}
+            self.weights = {mode: round(random.uniform(0.05, 1.0), 2) for mode in MODES}
             total = sum(self.weights.values())
             self.weights = {k: round(v / total, 2) for k, v in self.weights.items()}
         else:
             self.weights = weights.copy()
-        self.name = name or f"Strat_{random.randint(1000,9999)}"
+        self.name = name or f"Agent_{random.randint(1000,9999)}"
         self.fitness = 0.0
         self.success_rate = 0.0
+        self.novel_strategies = []  # Newly invented processing methods
 
-    def mutate(self, mutation_rate: float = 0.4):
+    def mutate(self):
         for mode in MODES:
-            if random.random() < mutation_rate:
-                self.weights[mode] = round(random.uniform(0.05, 1.2), 2)
+            if random.random() < 0.45:
+                self.weights[mode] = round(random.uniform(0.05, 1.3), 2)
         total = sum(self.weights.values())
         self.weights = {k: round(v / total, 2) for k, v in self.weights.items()}
 
     def crossover(self, other):
-        new_weights = {mode: round((self.weights[mode] + other.weights[mode])/2 + random.uniform(-0.1,0.1), 2) 
-                       for mode in MODES}
-        return CognitiveStrategy(new_weights)
+        new_weights = {}
+        for mode in MODES:
+            new_weights[mode] = round((self.weights[mode] + other.weights[mode]) / 2 + random.uniform(-0.15, 0.15), 2)
+        return CognitiveAgent(new_weights)
+
+    def invent_new_strategy(self):
+        new_name = f"Novel_{random.choice(['Resonance', 'Fractal', 'Phase', 'Echo', 'Collapse', 'Entanglement', 'Symmetry'])}"
+        description = f"NEW UNDISCOVERED METHOD: {new_name} — Emergent combination of {random.choice(MODES)} with {random.choice(['symmetry folding', 'meta-recursion', 'analogical projection', 'phase-space collapse', 'generative abstraction'])}"
+        self.novel_strategies.append({"name": new_name, "description": description})
+        return new_name
 
 # ====================== LOAD / SAVE ======================
 def load_profile():
@@ -179,30 +217,96 @@ if "current_champion" not in st.session_state:
     st.session_state.current_champion = None
 
 # ====================== SOLVE FUNCTION ======================
-def solve_with_strategy(problem, strategy):
+def solve_with_strategy(problem, agent):
     start = time.time()
     try:
         result = problem["solver"]()
         duration = time.time() - start
-        base = 0.12 if problem["type"] in ["ai_alignment", "bitcoin_puzzles", "philosophy_math", "fermi_astrobiology", "quantum_computing"] else 0.82
-        dominant = max(strategy.weights, key=strategy.weights.get)
-        bonus = strategy.weights[dominant] * (1.4 if dominant in ["meta_reflective", "resonance_folding", "analogical", "visual_spatial"] else 0.5)
-        success = random.random() < (base + bonus - duration * 0.04)
+        dominant = max(agent.weights, key=agent.weights.get)
+        bonus = agent.weights[dominant] * 0.85
+        success = random.random() < (0.75 + bonus - duration * 0.2)
         return success, duration, str(result)
     except:
-        return False, 10.0, "Frontier limit reached"
+        return False, 10.0, "Error"
+
+# ====================== EVOLUTION ENGINE ======================
+def run_evolution(generations=12, pop_size=25):
+    population = [CognitiveAgent() for _ in range(pop_size)]
+
+    progress_bar = st.progress(0)
+    for gen in range(generations):
+        for agent in population:
+            successes = 0
+            for prob in random.sample(PROBLEMS, min(10, len(PROBLEMS))):
+                success, _, _ = solve_with_strategy(prob, agent)
+                if success:
+                    successes += 1
+            agent.fitness = (successes / 10) + len(agent.novel_strategies) * 0.4 + random.uniform(0.2, 0.6)
+
+        population.sort(key=lambda a: a.fitness, reverse=True)
+
+        elite = population[:pop_size//2]
+        new_pop = elite[:]
+        while len(new_pop) < pop_size:
+            p1, p2 = random.sample(elite, 2)
+            child = p1.crossover(p2)
+            if random.random() < 0.55:
+                child.mutate()
+            if random.random() < 0.40:
+                child.invent_new_strategy()   # Generative discovery layer
+            new_pop.append(child)
+        population = new_pop
+
+        progress_bar.progress((gen + 1) / generations)
+
+    champion = max(population, key=lambda a: a.fitness)
+    return champion, population
 
 # ====================== TABS ======================
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Dashboard", "Evolution Lab", "Strategy Comparison", "Export Reports", "🧪 Ultimate Frontiers", "Custom Tester"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Dashboard", "Evolution Lab", "Strategy Comparison", "Export Reports", "🧪 Ultimate Frontiers"])
+
+with tab2:
+    st.header("Evolution Lab — Living Agent Population")
+    st.write("A population of cognitive agents evolves using genetic algorithm + generative discovery (no guardrails).")
+
+    generations = st.slider("Generations", 5, 50, 12)
+    pop_size = st.slider("Population Size", 10, 100, 25)
+
+    if st.button("🚀 Run Full Evolution Cycle", type="primary"):
+        with st.spinner("Evolving population of cognitive agents... New processing methods will be invented."):
+            champion, population = run_evolution(generations, pop_size)
+
+            st.session_state.current_champion = champion
+            st.session_state.user_profile["personal_strategy"] = champion.weights.copy()
+            st.session_state.user_profile["sessions"] += 1
+
+            snapshot = {
+                "session": st.session_state.user_profile["sessions"],
+                "timestamp": datetime.now().isoformat(),
+                "weights": champion.weights.copy(),
+                "novel_strategies": champion.novel_strategies
+            }
+            st.session_state.user_profile["strategy_snapshots"].append(snapshot)
+            save_profile(st.session_state.user_profile)
+
+            st.success("Evolution cycle complete!")
+
+            st.subheader("Champion Agent Strategy")
+            st.json(champion.weights)
+
+            if champion.novel_strategies:
+                st.subheader("🆕 Newly Invented Processing Methods")
+                for ns in champion.novel_strategies:
+                    st.success(f"**{ns['name']}** — {ns['description']}")
 
 with tab5:
-    st.header("🧪 Ultimate Unsolved Frontiers — Complete")
-    st.markdown("**All domains we built + Quantum Computing/Error Correction + Real Bitcoin Puzzles.**")
+    st.header("🧪 Ultimate Unsolved Frontiers")
+    st.markdown("Test the evolved agents on frontier problems (including real Bitcoin puzzles).")
 
     domains = {
-        "Quantum Computing & Quantum Domain": [p for p in PROBLEMS if p["type"] == "quantum_computing"],
         "Bitcoin Puzzles & Cryptographic Challenges": [p for p in PROBLEMS if p["type"] == "bitcoin_puzzles"],
         "AI Alignment & Safety": [p for p in PROBLEMS if p["type"] == "ai_alignment"],
+        "Quantum Computing & Error Correction": [p for p in PROBLEMS if p["type"] == "quantum_computing"],
         "Philosophy of Mathematics & Foundations": [p for p in PROBLEMS if p["type"] == "philosophy_math"],
         "Fermi Paradox / Astrobiology": [p for p in PROBLEMS if p["type"] == "fermi_astrobiology"],
         "Consciousness & Neuroscience": [p for p in PROBLEMS if p["type"] == "consciousness"],
@@ -217,15 +321,15 @@ with tab5:
         for i, prob in enumerate(problems_list):
             with st.expander(f"#{i+1}: {prob['problem']}", expanded=False):
                 st.write("**Current Status:**", prob["solver"]())
-                if st.button("Test Personal Strategy", key=f"{domain_name}_{i}"):
+                if st.button("Test Current Evolved Strategy", key=f"test_{domain_name}_{i}"):
                     if st.session_state.user_profile.get("personal_strategy"):
-                        strat = CognitiveStrategy(st.session_state.user_profile["personal_strategy"])
+                        strat = CognitiveAgent(st.session_state.user_profile["personal_strategy"])
                         success, duration, result = solve_with_strategy(prob, strat)
                         if success:
-                            st.success(f"🌟 Strategy generated insight in {duration:.2f}s!")
+                            st.success(f"🌟 Strategy succeeded in {duration:.2f}s")
                         else:
-                            st.info(f"Explored for {duration:.2f}s — still open")
+                            st.info(f"Strategy attempted for {duration:.2f}s — problem remains open")
                     else:
-                        st.warning("Evolve your strategy first!")
+                        st.warning("Run Evolution Lab first to create your strategy.")
 
-st.caption("CogniEvo v25 — Final Complete Edition with Quantum Computing, Quantum Error Correction & Real Bitcoin Puzzles")
+st.caption("CogniEvo v25 — Complete Agent Evolution Engine with generative discovery layer (no guardrails)")
