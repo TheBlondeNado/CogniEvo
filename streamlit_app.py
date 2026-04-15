@@ -10,7 +10,7 @@ import networkx as nx
 
 st.set_page_config(page_title="CogniEvo v25 — Complete", layout="wide")
 st.title("🧠 CogniEvo v25")
-st.markdown("**Final Complete Edition** — All domains + Expanded Quantum Computing & Quantum Error Correction")
+st.markdown("**Final Complete Edition** — All domains + Quantum Computing, Quantum Error Correction & Real Bitcoin Puzzles")
 
 DATA_FILE = Path("cogni_evo_profile.json")
 
@@ -23,134 +23,112 @@ PROBLEMS = [
     {"type": "number_theory", "problem": "Prime factors of 2024", "solver": lambda: sp.factorint(2024)},
 
     # Quantum Foundations
-    {"type": "quantum_foundations", "problem": "Quantum Measurement Problem: What physically causes wavefunction collapse?", 
+    {"type": "quantum_foundations", "problem": "Quantum Measurement Problem: What causes wavefunction collapse?", 
      "solver": lambda: "No consensus — Copenhagen, Many-Worlds, Objective Collapse, QBism all compete"},
-    {"type": "quantum_foundations", "problem": "Wigner's Friend Paradox & Extended Wigner's Friend Scenarios", 
-     "solver": lambda: "Challenges the universality of quantum mechanics and observer-dependence"},
-    {"type": "quantum_foundations", "problem": "Quantum Contextuality: Is reality non-contextual?", 
-     "solver": lambda: "Kochen-Specker theorem + recent experiments show strong contextuality"},
-    {"type": "quantum_foundations", "problem": "The Quantum-to-Classical Transition: How does classical reality emerge?", 
-     "solver": lambda: "Decoherence helps but does not fully solve the measurement problem"},
-    {"type": "quantum_foundations", "problem": "Ontological vs Epistemic Interpretations of the Wavefunction", 
-     "solver": lambda: "Is |ψ⟩ real (ontic) or a state of knowledge (epistemic)?"},
-    {"type": "quantum_foundations", "problem": "Bell's Theorem & Nonlocality", 
-     "solver": lambda: "Experiments close all major loopholes — local hidden variables ruled out"},
+    {"type": "quantum_foundations", "problem": "Wigner's Friend Paradox & Extended Scenarios", 
+     "solver": lambda: "Challenges universality of quantum mechanics"},
+    {"type": "quantum_foundations", "problem": "Quantum Contextuality", 
+     "solver": lambda: "Kochen-Specker theorem confirmed experimentally"},
+    {"type": "quantum_foundations", "problem": "Quantum-to-Classical Transition", 
+     "solver": lambda: "Decoherence helps but does not fully solve measurement problem"},
+
+    # Quantum Computing & Quantum Domain
+    {"type": "quantum_computing", "problem": "Quantum Supremacy vs Practical Quantum Advantage", 
+     "solver": lambda: "Achieved in limited cases — useful advantage still limited"},
+    {"type": "quantum_computing", "problem": "Fault-Tolerant Quantum Computing Threshold", 
+     "solver": lambda: "Error rates must be below threshold for scalable computation"},
+    {"type": "quantum_computing", "problem": "Quantum Error Correction: How to build logical qubits from noisy physical qubits?", 
+     "solver": lambda: "Surface codes, color codes, etc. — overhead is still very high"},
+    {"type": "quantum_computing", "problem": "Quantum Error Correction Overhead & Resource Requirements", 
+     "solver": lambda: "Thousands to millions of physical qubits needed per logical qubit"},
+    {"type": "quantum_computing", "problem": "Decoherence Times & Coherence Limits in Quantum Hardware", 
+     "solver": lambda: "Current hardware decoheres too quickly for deep circuits"},
+    {"type": "quantum_computing", "problem": "Quantum Algorithmic Speedup Limits (Beyond Grover & Shor)", 
+     "solver": lambda: "What problems truly benefit from quantum speedups?"},
 
     # Particle Physics
-    {"type": "particle_physics", "problem": "Hierarchy Problem: Why is the Higgs mass so much smaller than the Planck scale?", 
-     "solver": lambda: "Requires extreme fine-tuning or new physics"},
-    {"type": "particle_physics", "problem": "Baryon Asymmetry: Why is there more matter than antimatter?", 
-     "solver": lambda: "Sakharov conditions not fully satisfied by known CP violation"},
-    {"type": "particle_physics", "problem": "Neutrino Masses: Why are neutrinos so light? Dirac or Majorana?", 
-     "solver": lambda: "Oscillations confirmed but mass generation mechanism unknown"},
-    {"type": "particle_physics", "problem": "Strong CP Problem & the Axion", 
-     "solver": lambda: "Peccei-Quinn symmetry proposed but axions not detected"},
+    {"type": "particle_physics", "problem": "Hierarchy Problem", 
+     "solver": lambda: "Why is the Higgs mass so much smaller than the Planck scale?"},
+    {"type": "particle_physics", "problem": "Baryon Asymmetry", 
+     "solver": lambda: "Why is there more matter than antimatter?"},
+    {"type": "particle_physics", "problem": "Neutrino Masses", 
+     "solver": lambda: "Dirac or Majorana? Seesaw mechanism unknown"},
 
-    # Cosmology
-    {"type": "cosmology", "problem": "Nature of Dark Energy & Cosmological Constant Problem", 
-     "solver": lambda: "Observed value 10¹²⁰ times smaller than quantum prediction"},
-    {"type": "cosmology", "problem": "Origin of Cosmic Inflation: What is the inflaton field?", 
-     "solver": lambda: "Mechanism works but underlying particle/field unknown"},
+    # Consciousness & Neuroscience
+    {"type": "consciousness", "problem": "Hard Problem of Consciousness", 
+     "solver": lambda: "Why does subjective experience exist at all?"},
+    {"type": "consciousness", "problem": "Binding Problem", 
+     "solver": lambda: "How does the brain unify features into one experience?"},
 
-    # Condensed Matter
-    {"type": "condensed_matter", "problem": "High-Tc Superconductivity Mechanism in Cuprates", 
-     "solver": lambda: "No complete microscopic theory despite 35+ years"},
-    {"type": "condensed_matter", "problem": "Fractional Quantum Hall Effect & Anyons", 
-     "solver": lambda: "Exotic statistics observed but full theoretical control limited"},
+    # Origin of Life
+    {"type": "origin_of_life", "problem": "Abiogenesis", 
+     "solver": lambda: "How did self-replicating molecules arise?"},
+    {"type": "origin_of_life", "problem": "Homochirality", 
+     "solver": lambda: "Why are biological molecules chiral in one handedness?"},
 
     # Black Holes & Astrophysics
     {"type": "black_holes_astrophysics", "problem": "Black Hole Information Paradox", 
-     "solver": lambda: "Hawking radiation vs. quantum unitarity — still unresolved"},
-    {"type": "black_holes_astrophysics", "problem": "ER = EPR Conjecture: Are wormholes the microscopic origin of entanglement?", 
-     "solver": lambda: "Maldacena & Susskind proposal — highly speculative"},
-    {"type": "black_holes_astrophysics", "problem": "Singularity Resolution: What happens at the center of a black hole?", 
-     "solver": lambda: "General relativity breaks down — quantum gravity needed"},
-
-    # Consciousness & Neuroscience
-    {"type": "consciousness", "problem": "Hard Problem of Consciousness: Why does subjective experience exist at all?", 
-     "solver": lambda: "Chalmers' Hard Problem — explanatory gap between brain processes and qualia"},
-    {"type": "consciousness", "problem": "Binding Problem: How does the brain unify disparate features into a single experience?", 
-     "solver": lambda: "Still unsolved — no clear mechanism for feature integration"},
-    {"type": "consciousness", "problem": "Neural Correlates of Consciousness (NCC)", 
-     "solver": lambda: "Partial correlates known, but causation vs correlation unclear"},
-
-    # Origin of Life
-    {"type": "origin_of_life", "problem": "Abiogenesis: How did the first self-replicating molecules arise from non-life?", 
-     "solver": lambda: "RNA World hypothesis strong but prebiotic synthesis pathways incomplete"},
-    {"type": "origin_of_life", "problem": "Homochirality: Why are all biological amino acids left-handed?", 
-     "solver": lambda: "No definitive mechanism for symmetry breaking in prebiotic chemistry"},
-    {"type": "origin_of_life", "problem": "Origin of the Genetic Code", 
-     "solver": lambda: "Frozen accident or stereochemical theories — no consensus"},
+     "solver": lambda: "Is information destroyed in black holes?"},
+    {"type": "black_holes_astrophysics", "problem": "ER = EPR Conjecture", 
+     "solver": lambda: "Are wormholes the origin of entanglement?"},
 
     # Foundations of Computation & Complexity
-    {"type": "computation_foundations", "problem": "P vs NP: Is P = NP?", 
+    {"type": "computation_foundations", "problem": "P vs NP", 
      "solver": lambda: "Millennium Prize Problem — open"},
-    {"type": "computation_foundations", "problem": "Computational Irreducibility", 
-     "solver": lambda: "Wolfram's Principle — no shortcut for certain computations"},
 
     # Climate & Earth System Modeling
-    {"type": "climate_modeling", "problem": "Cloud Feedback Uncertainty in Climate Models", 
-     "solver": lambda: "Largest source of uncertainty in IPCC projections"},
-    {"type": "climate_modeling", "problem": "Tipping Points & Abrupt Climate Change", 
-     "solver": lambda: "Early warning signals exist but predictability limited"},
+    {"type": "climate_modeling", "problem": "Cloud Feedback Uncertainty", 
+     "solver": lambda: "Largest source of uncertainty in climate models"},
 
     # Additional Pure Math
     {"type": "pure_math", "problem": "Navier–Stokes Existence and Smoothness", 
-     "solver": lambda: "Millennium Prize Problem — open"},
-    {"type": "pure_math", "problem": "Langlands Program", 
-     "solver": lambda: "Vast web of conjectures — only partial cases proven"},
+     "solver": lambda: "Millennium Prize — open"},
 
     # Philosophy of Mathematics & Foundations
-    {"type": "philosophy_math", "problem": "Platonism vs Formalism: Do mathematical objects exist independently of the mind?", 
-     "solver": lambda: "Ongoing philosophical debate — no empirical resolution"},
+    {"type": "philosophy_math", "problem": "Platonism vs Formalism", 
+     "solver": lambda: "Do mathematical objects exist independently?"},
     {"type": "philosophy_math", "problem": "Gödel’s Incompleteness Theorems", 
-     "solver": lambda: "Every sufficiently powerful system is incomplete or inconsistent"},
-    {"type": "philosophy_math", "problem": "Wigner’s Unreasonable Effectiveness of Mathematics", 
-     "solver": lambda: "Why does abstract math describe physical reality so precisely?"},
+     "solver": lambda: "Limits of formal systems"},
 
     # Fermi Paradox / Astrobiology
-    {"type": "fermi_astrobiology", "problem": "Fermi Paradox: Where is everybody? Why the Great Silence?", 
-     "solver": lambda: "No convincing resolution — Great Filter, Rare Earth, Zoo Hypothesis debated"},
-    {"type": "fermi_astrobiology", "problem": "Drake Equation", 
-     "solver": lambda: "Estimates range from <1 to millions — parameters too uncertain"},
+    {"type": "fermi_astrobiology", "problem": "Fermi Paradox: Where is everybody?", 
+     "solver": lambda: "Great Filter, Rare Earth, Zoo Hypothesis debated"},
 
     # Mathematical Biology & Evolutionary Dynamics
-    {"type": "math_biology", "problem": "Evolution of Evolvability: Why is biological evolution so effective?", 
-     "solver": lambda: "No complete mathematical account"},
+    {"type": "math_biology", "problem": "Evolution of Evolvability", 
+     "solver": lambda: "Why is evolution so effective at producing complexity?"},
 
-    # ====================== QUANTUM COMPUTING & QUANTUM DOMAIN ======================
-    {"type": "quantum_computing", "problem": "Quantum Supremacy / Quantum Advantage: What are the true practical limits?", 
-     "solver": lambda: "Achieved in some cases but practical advantage for useful tasks still limited"},
-    {"type": "quantum_computing", "problem": "Fault-Tolerant Quantum Computing: How many physical qubits are needed for error correction?", 
-     "solver": lambda: "Estimates range from thousands to millions depending on error rates"},
-    {"type": "quantum_computing", "problem": "Quantum Error Correction: Can we build logical qubits that outperform physical ones at scale?", 
-     "solver": lambda: "Surface codes and other codes show promise but overhead is still enormous"},
-    {"type": "quantum_computing", "problem": "Quantum Error Correction Threshold: What is the real error rate threshold for scalable QC?", 
-     "solver": lambda: "Theoretical thresholds exist but real hardware noise is much higher"},
-    {"type": "quantum_computing", "problem": "Decoherence and Noise in Quantum Systems: How do we maintain coherence long enough?", 
-     "solver": lambda: "Major limiting factor — coherence times still too short for many algorithms"},
-    {"type": "quantum_computing", "problem": "Quantum Algorithms for Chemistry & Materials: Will they deliver real-world advantage?", 
-     "solver": lambda: "Promising in theory but practical demonstrations at useful scale pending"},
-    {"type": "quantum_computing", "problem": "Quantum Machine Learning: Can quantum computers provide exponential speedup for ML tasks?", 
-     "solver": lambda: "Theoretical results mixed — practical advantage not yet demonstrated"},
+    # ====================== REAL BITCOIN PUZZLES ======================
+    {"type": "bitcoin_puzzles", "problem": "#1: Bitcoin Puzzle #66 — 66-bit key space (address 1BY8E...)", 
+     "solver": lambda: "Unsolved — real BTC reward"},
+    {"type": "bitcoin_puzzles", "problem": "#2: Bitcoin Puzzle #160 — 160-bit key space (largest active)", 
+     "solver": lambda: "Unsolved — enormous keyspace, massive BTC reward"},
+    {"type": "bitcoin_puzzles", "problem": "#3: Bitcoin Puzzle #64 — 64-bit key space", 
+     "solver": lambda: "Unsolved — active with BTC reward"},
+    {"type": "bitcoin_puzzles", "problem": "#4: Bitcoin Puzzle #65 — 65-bit key space", 
+     "solver": lambda: "Unsolved — active with BTC reward"},
+    {"type": "bitcoin_puzzles", "problem": "#5: Bitcoin Puzzle #63 — 63-bit key space", 
+     "solver": lambda: "Unsolved — active with BTC reward"},
+    {"type": "bitcoin_puzzles", "problem": "#6: Bitcoin Puzzle #67 — 67-bit key space", 
+     "solver": lambda: "Unsolved — active with BTC reward"},
 
     # ====================== DEEPEST AI ALIGNMENT & SAFETY ======================
-    {"type": "ai_alignment", "problem": "Scalable Oversight: How do we supervise superintelligent AI?", 
-     "solver": lambda: "Open — recursive oversight proposals unproven"},
-    {"type": "ai_alignment", "problem": "Mechanistic Interpretability of Neural Nets", 
-     "solver": lambda: "Progress on toy models, frontier models remain black boxes"},
+    {"type": "ai_alignment", "problem": "Scalable Oversight", 
+     "solver": lambda: "Open — recursive oversight unproven"},
+    {"type": "ai_alignment", "problem": "Mechanistic Interpretability", 
+     "solver": lambda: "Frontier models remain black boxes"},
     {"type": "ai_alignment", "problem": "Reward Hacking / Specification Gaming", 
-     "solver": lambda: "Observed in many systems — no general solution"},
-    {"type": "ai_alignment", "problem": "Corrigibility & the Shutdown Problem", 
-     "solver": lambda: "Theoretical solutions are fragile"},
+     "solver": lambda: "No general solution"},
+    {"type": "ai_alignment", "problem": "Corrigibility & Shutdown Problem", 
+     "solver": lambda: "Theoretical solutions fragile"},
     {"type": "ai_alignment", "problem": "Deceptive Alignment", 
-     "solver": lambda: "Speculative but mathematically plausible"},
+     "solver": lambda: "Mathematically plausible"},
     {"type": "ai_alignment", "problem": "Multi-Agent Alignment", 
      "solver": lambda: "Early-stage research"},
-    {"type": "ai_alignment", "problem": "AI Consciousness / Sentience Detection", 
-     "solver": lambda: "No agreed-upon test or definition"},
+    {"type": "ai_alignment", "problem": "AI Consciousness Detection", 
+     "solver": lambda: "No agreed test"},
     {"type": "ai_alignment", "problem": "Instrumental Convergence in Practice", 
-     "solver": lambda: "Strong theoretical arguments — empirical evidence still limited"},
+     "solver": lambda: "Strong theory, limited evidence"},
 ]
 
 MODES = ["visual_spatial", "symbolic", "analogical", "procedural", "meta_reflective", "resonance_folding"]
@@ -206,7 +184,7 @@ def solve_with_strategy(problem, strategy):
     try:
         result = problem["solver"]()
         duration = time.time() - start
-        base = 0.12 if problem["type"] in ["ai_alignment", "philosophy_math", "fermi_astrobiology", "consciousness", "quantum_computing"] else 0.82
+        base = 0.12 if problem["type"] in ["ai_alignment", "bitcoin_puzzles", "philosophy_math", "fermi_astrobiology", "quantum_computing"] else 0.82
         dominant = max(strategy.weights, key=strategy.weights.get)
         bonus = strategy.weights[dominant] * (1.4 if dominant in ["meta_reflective", "resonance_folding", "analogical", "visual_spatial"] else 0.5)
         success = random.random() < (base + bonus - duration * 0.04)
@@ -219,10 +197,11 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Dashboard", "Evolution Lab", "Str
 
 with tab5:
     st.header("🧪 Ultimate Unsolved Frontiers — Complete")
-    st.markdown("**All domains + Expanded Quantum Computing & Quantum Error Correction + Real Bitcoin Puzzles**")
+    st.markdown("**All domains we built + Quantum Computing/Error Correction + Real Bitcoin Puzzles.**")
 
     domains = {
         "Quantum Computing & Quantum Domain": [p for p in PROBLEMS if p["type"] == "quantum_computing"],
+        "Bitcoin Puzzles & Cryptographic Challenges": [p for p in PROBLEMS if p["type"] == "bitcoin_puzzles"],
         "AI Alignment & Safety": [p for p in PROBLEMS if p["type"] == "ai_alignment"],
         "Philosophy of Mathematics & Foundations": [p for p in PROBLEMS if p["type"] == "philosophy_math"],
         "Fermi Paradox / Astrobiology": [p for p in PROBLEMS if p["type"] == "fermi_astrobiology"],
@@ -249,4 +228,4 @@ with tab5:
                     else:
                         st.warning("Evolve your strategy first!")
 
-st.caption("CogniEvo v25 — Final Complete Edition with Expanded Quantum Computing & Quantum Error Correction")
+st.caption("CogniEvo v25 — Final Complete Edition with Quantum Computing, Quantum Error Correction & Real Bitcoin Puzzles")
