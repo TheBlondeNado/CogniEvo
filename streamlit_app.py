@@ -142,8 +142,6 @@ if st.session_state.running:
             while len(new_pop) < 20:
                 p1, p2 = random.sample(elite, 2)
                 child = CognitiveAgent()
-                if random.random() < 0.5:
-                    child.mutate = CognitiveAgent.mutate  # dummy
                 if random.random() < 0.3:
                     child.invent_new_strategy()
                 new_pop.append(child)
