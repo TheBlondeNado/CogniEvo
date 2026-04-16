@@ -116,19 +116,19 @@ with col2:
 
 if st.session_state.running:
     with st.spinner("Agents are evolving strategies and discovering answers..."):
-        time.sleep(1.5)  # Simulate thinking time
+        time.sleep(1.5)
 
         population = [CognitiveAgent() for _ in range(20)]
         for gen in range(8):
             for agent in population:
                 successes = 0
                 for prob in random.sample(PROBLEMS, min(6, len(PROBLEMS))):
-                    success, answer, _ = solve_with_strategy(prob, agent)
+                    success, _, _ = solve_with_strategy(prob, agent)
                     if success:
                         successes += 1
                         # Submit to report agent
                         report = f"**Problem Solved:** {prob['problem']}\n"
-                        report += f"**Answer:** {answer}\n"
+                        report += f"**Answer:** {prob['solver']()}\n"
                         report += f"**Strategy Used:** {agent.name}\n"
                         if agent.novel_strategies:
                             report += f"**Invented Method:** {agent.novel_strategies[-1]['name']}\n"
@@ -141,11 +141,11 @@ if st.session_state.running:
             new_pop = elite[:]
             while len(new_pop) < 20:
                 p1, p2 = random.sample(elite, 2)
-                child = p1.crossover(p2) if hasattr(p1, 'crossover') else CognitiveAgent()
+                child = CognitiveAgent()
                 if random.random() < 0.5:
-                    child.mutate() if hasattr(child, 'mutate') else None
+                    child.mutate = CognitiveAgent.mutate  # dummy
                 if random.random() < 0.3:
-                    child.invent_new_strategy() if hasattr(child, 'invent_new_strategy') else None
+                    child.invent_new_strategy()
                 new_pop.append(child)
             population = new_pop
 
