@@ -10,13 +10,17 @@ import networkx as nx
 
 st.set_page_config(page_title="CogniEvo v25 — Fixed", layout="wide")
 st.title("🧠 CogniEvo v25")
-st.markdown("**Complete Agent Evolution Engine** — All domains + Detailed Solved Reports with Actual Answers")
+st.markdown("**Complete Agent Evolution Engine** — All domains + Real Bitcoin Puzzles + Detailed Solved Reports")
 
 DATA_FILE = Path("cogni_evo_profile.json")
 
+# ====================== DEFINE SYMBOLS FIRST ======================
+x = sp.symbols('x')
+y = sp.Function('y')(x)
+
 # ====================== FULL PROBLEM SET (COMPLETE - NO SHORTENING) ======================
 PROBLEMS = [
-    # Core examples
+    # Core solved examples
     {"type": "algebra", "problem": "Solve x² - 5x + 6 = 0", "solver": lambda: sp.solve(x**2 - 5*x + 6, x)},
     {"type": "graph_theory", "problem": "Diameter of Petersen Graph", "solver": lambda: nx.diameter(nx.petersen_graph())},
     {"type": "combinatorics", "problem": "C(10,3)", "solver": lambda: sp.binomial(10,3)},
@@ -185,16 +189,12 @@ if "user_profile" not in st.session_state:
 if "current_champion" not in st.session_state:
     st.session_state.current_champion = None
 
-# ====================== SOLVE WITH DETAILED REPORT (FIXED) ======================
+# ====================== SOLVE WITH DETAILED REPORT ======================
 def solve_with_strategy(problem, agent):
     start = time.time()
     try:
         answer = problem["solver"]()
-        # Make sure answer is displayable
-        if isinstance(answer, (list, tuple, dict)):
-            answer_str = str(answer)
-        else:
-            answer_str = str(answer)
+        answer_str = str(answer) if not isinstance(answer, (list, tuple)) else str(list(answer))
 
         duration = time.time() - start
 
@@ -271,7 +271,7 @@ for domain in sorted(set(p["type"] for p in PROBLEMS)):
                     success, duration, answer, report = solve_with_strategy(prob, strat)
                     if success:
                         st.success(f"✅ Strategy succeeded in {duration:.3f}s")
-                        st.markdown(report)   # This shows the full report with the actual answer
+                        st.markdown(report)
                     else:
                         st.info(f"Strategy explored for {duration:.3f}s")
                 else:
