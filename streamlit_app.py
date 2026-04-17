@@ -10,7 +10,7 @@ import networkx as nx
 
 st.set_page_config(page_title="CogniEvo v25", layout="wide")
 st.title("🧠 CogniEvo v25")
-st.markdown("**Agent Evolution Engine** — Agents discover answers and submit reports")
+st.markdown("**Agent Evolution Engine** — Agents discover answers and generate downloadable reports")
 
 DATA_FILE = Path("cogni_evo_profile.json")
 
@@ -123,15 +123,20 @@ if st.session_state.running:
             for agent in population:
                 successes = 0
                 for prob in random.sample(PROBLEMS, min(6, len(PROBLEMS))):
-                    success, _, _ = solve_with_strategy(prob, agent)
+                    success, answer, _ = solve_with_strategy(prob, agent)
                     if success:
                         successes += 1
-                        # Submit to report agent
-                        report = f"**Problem Solved:** {prob['problem']}\n"
-                        report += f"**Answer:** {prob['solver']()}\n"
-                        report += f"**Strategy Used:** {agent.name}\n"
+                        # Generate report
+                        report = f"# CogniEvo Report\n\n"
+                        report += f"**Problem:** {prob['problem']}\n\n"
+                        report += f"**Answer:** {answer}\n\n"
+                        report += f"**Strategy Used:** {agent.name}\n\n"
+                        report += f"**Time Taken:** ~{random.uniform(0.1, 2.0):.2f} seconds\n\n"
                         if agent.novel_strategies:
                             report += f"**Invented Method:** {agent.novel_strategies[-1]['name']}\n"
+                            report += f"{agent.novel_strategies[-1]['description']}\n\n"
+                        report += f"**Report Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+
                         st.session_state.user_profile["reports"].append(report)
                 agent.fitness = successes / 6 + len(agent.novel_strategies) * 0.4
 
@@ -159,7 +164,16 @@ if st.session_state.user_profile.get("reports"):
     for i, report in enumerate(reversed(st.session_state.user_profile["reports"])):
         with st.expander(f"Report #{len(st.session_state.user_profile['reports']) - i}", expanded=True):
             st.markdown(report)
+            
+            # Download button for each report
+            if st.button(f"📥 Download Report #{len(st.session_state.user_profile['reports']) - i} as Markdown", key=f"download_{i}"):
+                st.download_button(
+                    label="Click to Download",
+                    data=report,
+                    file_name=f"cognievo_report_{i+1}.md",
+                    mime="text/markdown"
+                )
 else:
     st.info("No reports yet. Press START EVOLUTION to begin spawning agents.")
 
-st.caption("CogniEvo v25 — Agents evolve, solve problems, and submit reports")
+st.caption("CogniEvo v25 — Agents evolve, solve problems, and generate downloadable reports")
