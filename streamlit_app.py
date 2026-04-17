@@ -156,8 +156,8 @@ if st.session_state.running:
 st.header("📄 Reports")
 
 if st.session_state.user_profile.get("reports"):
-    for i, report in enumerate(st.session_state.user_profile["reports"]):
-        with st.expander(f"Report #{i+1}", expanded=True):
+    for i, report in enumerate(reversed(st.session_state.user_profile["reports"])):
+        with st.expander(f"Report #{len(st.session_state.user_profile['reports']) - i}", expanded=True):
             st.markdown(report)
 else:
     st.info("No reports yet. Press START EVOLUTION to begin spawning agents.")
