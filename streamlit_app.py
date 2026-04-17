@@ -126,8 +126,8 @@ if st.session_state.running:
                     success, answer, _ = solve_with_strategy(prob, agent)
                     if success:
                         successes += 1
-                        # Generate report
-                        report = f"# CogniEvo Report\n\n"
+                        # Generate full report
+                        report = f"# CogniEvo Solved Report\n\n"
                         report += f"**Problem:** {prob['problem']}\n\n"
                         report += f"**Answer:** {answer}\n\n"
                         report += f"**Strategy Used:** {agent.name}\n\n"
@@ -136,6 +136,7 @@ if st.session_state.running:
                             report += f"**Invented Method:** {agent.novel_strategies[-1]['name']}\n"
                             report += f"{agent.novel_strategies[-1]['description']}\n\n"
                         report += f"**Report Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+                        report += "---\n"
 
                         st.session_state.user_profile["reports"].append(report)
                 agent.fitness = successes / 6 + len(agent.novel_strategies) * 0.4
@@ -168,12 +169,13 @@ if st.session_state.user_profile.get("reports"):
             # Download button for each report
             if st.button(f"📥 Download Report #{len(st.session_state.user_profile['reports']) - i} as Markdown", key=f"download_{i}"):
                 st.download_button(
-                    label="Click to Download",
+                    label="Click here to download",
                     data=report,
-                    file_name=f"cognievo_report_{i+1}.md",
-                    mime="text/markdown"
+                    file_name=f"cognievo_report_{len(st.session_state.user_profile['reports']) - i}.md",
+                    mime="text/markdown",
+                    use_container_width=True
                 )
 else:
     st.info("No reports yet. Press START EVOLUTION to begin spawning agents.")
 
-st.caption("CogniEvo v25 — Agents evolve, solve problems, and generate downloadable reports")
+st.caption("CogniEvo v25 — Reports are downloadable as Markdown (open with Google Docs)")
